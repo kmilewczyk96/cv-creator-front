@@ -6,8 +6,8 @@ const editorStore = useEditorStore();
 </script>
 
 <template>
-  <q-card bordered class="mainWrapper" flat square>
-    <q-list padding>
+  <q-card bordered class="editorToolsPanel" flat square>
+    <q-list>
       <template v-for="section in sections">
         <q-item
           :active="section.name === editorStore.currentSection"
@@ -28,11 +28,25 @@ const editorStore = useEditorStore();
         </q-item>
       </template>
     </q-list>
+    <q-separator dark/>
+    <q-list>
+      <q-item clickable dark>
+        <q-item-section avatar>
+          <q-avatar
+            color="info"
+            icon="download"
+            rounded
+            textColor="white"
+          />
+        </q-item-section>
+        <q-item-section class="text-capitalize">Download</q-item-section>
+      </q-item>
+    </q-list>
   </q-card>
 </template>
 
 <style scoped>
-.mainWrapper {
+.editorToolsPanel {
   background: linear-gradient(
     120deg,
     var(--color-gray-900) 0%,
@@ -45,6 +59,7 @@ const editorStore = useEditorStore();
   flex-direction: column;
   gap: 2rem;
   min-height: 100vh;
+  padding-top: 9.6rem;
   width: 24rem;
 }
 

@@ -9,7 +9,7 @@ const editorStore = useEditorStore();
 </script>
 
 <template>
-  <q-card bordered class="mainWrapper bg-white" flat square>
+  <q-card bordered class="formPanel bg-white" flat square>
     <h3 class="text-capitalize q-px-md q-py-lg">{{editorStore.currentSection}}</h3>
     <q-separator/>
     <PersonalInfoForm v-if="editorStore.currentSection === 'personal'"/>
@@ -23,7 +23,7 @@ const editorStore = useEditorStore();
 </template>
 
 <style scoped>
-.mainWrapper {
+.formPanel {
   display: flex;
   flex-direction: column;
   min-height: 100vh;

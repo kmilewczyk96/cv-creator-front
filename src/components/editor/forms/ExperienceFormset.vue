@@ -15,6 +15,7 @@ async function handleAddExperienceForm() {
     start_date: "",
     end_date: "",
     is_ongoing: false,
+    description: "",
   }
   editorStore.addExperienceForm(newForm);
   await nextTick();

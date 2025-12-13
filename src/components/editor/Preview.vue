@@ -1,11 +1,15 @@
 <script setup lang="ts">
-
+import ExperiencePreview from "@/components/editor/section-previews/ExperiencePreview.vue";
 import PersonalInfoPreview from "@/components/editor/section-previews/PersonalInfoPreview.vue";
+import {useEditorStore} from "@/stores/editorStore.ts";
+
+const editorStore = useEditorStore();
 </script>
 
 <template>
   <q-card class="a4-page">
     <PersonalInfoPreview/>
+    <ExperiencePreview v-if="editorStore.formData.experience_forms.length !== 0"/>
   </q-card>
 </template>
 

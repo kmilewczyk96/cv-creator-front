@@ -66,6 +66,7 @@ const editorStore = useEditorStore();
 }
 
 .previewDescription {
+  font-size: 1rem;
   text-align: justify;
 }
 </style>

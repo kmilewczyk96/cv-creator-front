@@ -23,6 +23,7 @@ const props = defineProps({
       type="date"
     />
     <q-toggle v-model="props.formData.is_ongoing" label="Current position"/>
+    <q-input v-model="props.formData.description" class="span2" label="Description" outlined type="textarea"/>
   </q-form>
 </template>
 

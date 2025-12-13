@@ -1,1 +1,1 @@
-declare type TSectionWithFormset = "experience";
+declare type TSectionWithFormset = "experience" | "education";

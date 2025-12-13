@@ -8,14 +8,20 @@ const editorStore = useEditorStore();
 <template>
   <SectionWrapper title="Work History">
     <q-list class="jobList">
-      <div v-for="job in editorStore.formData.experience_formset" class="jobWrapper">
-        <div class="jobTitleWrapper">
-          <p class="jobTitle">{{job.title}}</p>
-          <p class="jobTimeRange">{{job.start_date}} - {{job.is_ongoing ? 'present' : job.end_date}}</p>
+      <template v-for="job in editorStore.formData.experience_formset">
+        <div v-if="job.title || job.start_date || job.end_date || job.company || job.description" class="jobWrapper">
+          <div class="jobTitleWrapper">
+            <p v-if="job.title" class="jobTitle">{{job.title}}</p>
+            <p
+              v-if="job.start_date || job.end_date"
+              class="jobTimeRange"
+            >{{job.start_date}} - {{job.is_ongoing ? 'present' : job.end_date}}
+            </p>
+          </div>
+          <p v-if="job.company" class="jobCompany">{{job.company}}</p>
+          <p v-if="job.description" class="jobDescription">{{job.description}}</p>
         </div>
-        <p class="jobCompany">{{job.company}}</p>
-        <p v-if="job.description.length !== 0" class="jobDescription">{{job.description}}</p>
-      </div>
+      </template>
     </q-list>
   </SectionWrapper>
 </template>

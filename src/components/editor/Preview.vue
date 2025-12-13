@@ -2,6 +2,7 @@
 import ExperiencePreview from "@/components/editor/section-previews/ExperiencePreview.vue";
 import PersonalInfoPreview from "@/components/editor/section-previews/PersonalInfoPreview.vue";
 import {useEditorStore} from "@/stores/editorStore.ts";
+import EducationPreview from "@/components/editor/section-previews/EducationPreview.vue";
 
 const editorStore = useEditorStore();
 </script>
@@ -10,6 +11,7 @@ const editorStore = useEditorStore();
   <q-card class="a4-page">
     <PersonalInfoPreview/>
     <ExperiencePreview v-if="editorStore.formData.experience_formset.length !== 0"/>
+    <EducationPreview v-if="editorStore.formData.education_formset.length !== 0"/>
   </q-card>
 </template>
 

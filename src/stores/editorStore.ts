@@ -37,13 +37,22 @@ export const useEditorStore = defineStore('editorStore', {
     },
   }),
   actions: {
-    addNewForm(relatedSection: "experience"): void {
-      const formset = this.formData[`${relatedSection}_formset`];
+    addNewForm(relatedSection: TSectionWithFormset): void {
       switch (relatedSection) {
         case "experience":
-          formset.push({
+          this.formData.experience_formset.push({
             title: "",
             company: "",
+            start_date: "",
+            end_date: "",
+            is_ongoing: false,
+            description: "",
+          });
+          break;
+        case "education":
+          this.formData.education_formset.push({
+            title: "",
+            school: "",
             start_date: "",
             end_date: "",
             is_ongoing: false,

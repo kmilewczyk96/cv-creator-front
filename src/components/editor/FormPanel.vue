@@ -3,6 +3,7 @@ import {useEditorStore} from "@/stores/editorStore.ts";
 import PersonalInfoForm from "@/components/editor/forms/PersonalInfoForm.vue";
 import BaseFormset from "@/components/editor/forms/BaseFormset.vue";
 import ExperienceForm from "@/components/editor/forms/ExperienceForm.vue";
+import EducationForm from "@/components/editor/forms/EducationForm.vue";
 
 const editorStore = useEditorStore();
 </script>
@@ -13,7 +14,10 @@ const editorStore = useEditorStore();
     <q-separator/>
     <PersonalInfoForm v-if="editorStore.currentSection === 'personal'"/>
     <BaseFormset v-else-if="editorStore.currentSection === 'experience'" v-slot="slotProps" section="experience">
-      <ExperienceForm :form-data="slotProps.formData"/>
+      <ExperienceForm :formData="slotProps.formData"/>
+    </BaseFormset>
+    <BaseFormset v-else-if="editorStore.currentSection === 'education'" v-slot="slotProps" section="education">
+      <EducationForm :formData="slotProps.formData"/>
     </BaseFormset>
   </q-card>
 </template>

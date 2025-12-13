@@ -9,7 +9,11 @@ const editorStore = useEditorStore();
   <SectionWrapper title="Education">
     <q-list class="educationList">
       <template v-for="education in editorStore.formData.education_formset">
-        <div v-if="education.title || education.start_date || education.end_date || education.school || education.description" class="educationWrapper">
+        <div
+          v-if="education.title || education.start_date || education.end_date || education.school || education.description"
+          class="educationWrapper"
+          data-page-break="item"
+        >
           <div class="educationTitleWrapper">
             <p v-if="education.title" class="educationTitle">{{education.title}}</p>
             <p

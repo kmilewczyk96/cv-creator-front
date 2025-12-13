@@ -34,19 +34,121 @@ async function paginate() {
   pagesRoot.appendChild(currentPage);
 
   const children = Array.from(staging.children) as HTMLElement[];
-  for (const child of children) {
-    const clone = child.cloneNode(true) as HTMLElement;
-    currentPage.appendChild(clone);
 
-    // If overflow, move element to a new page
-    const overflows = currentPage.scrollHeight > currentPage.clientHeight;
-    if (overflows) {
-      currentPage.removeChild(clone);
-      // add a spacer between pages via CSS gap by wrapping pages in flex column
+  // Utility: replicate an element shallowly (tag, classes, attributes)
+  const shallowClone = (el: HTMLElement): HTMLElement => {
+    const clone = document.createElement(el.tagName.toLowerCase());
+    clone.className = el.className;
+    // copy attributes
+    for (const attr of Array.from(el.attributes)) {
+      // Skip id to avoid duplicates
+      if (attr.name === 'id') continue;
+      clone.setAttribute(attr.name, attr.value);
+    }
+    return clone as HTMLElement;
+  };
+
+  const pageOverflows = (page: HTMLElement) => page.scrollHeight > page.clientHeight;
+
+  // Append node to page, if overflow then move to a fresh page first
+  const ensureAppendToPage = (node: HTMLElement, withNewPageIfNeeded = true) => {
+    currentPage.appendChild(node);
+    if (pageOverflows(currentPage) && withNewPageIfNeeded) {
+      currentPage.removeChild(node);
       currentPage = makePage();
       pagesRoot.appendChild(currentPage);
-      currentPage.appendChild(clone);
+      currentPage.appendChild(node);
     }
+  };
+
+  // Handle a section that contains breakable items
+  const paginateSectionWithItems = (sectionEl: HTMLElement) => {
+    const items = Array.from(sectionEl.querySelectorAll('[data-page-break="item"]')) as HTMLElement[];
+    if (items.length === 0) {
+      // fallback to block-level
+      const sectionClone = sectionEl.cloneNode(true) as HTMLElement;
+      ensureAppendToPage(sectionClone);
+      return;
+    }
+
+    // Find header (keep-with-next) if present
+    const header = sectionEl.querySelector('[data-page-break="keep-with-next"]') as HTMLElement | null;
+    // Find the container that directly holds the items (assume same parent for all items)
+    const itemParent = items[0].parentElement as HTMLElement;
+
+    let isFirstSegment = true;
+    let shell: HTMLElement | null = null;
+    let shellItemContainer: HTMLElement | null = null;
+
+    const startNewShell = (includeHeader: boolean) => {
+      // Create outer shell based on the section element
+      const outer = shallowClone(sectionEl);
+      // Include header if needed
+      if (includeHeader && header) {
+        outer.appendChild(header.cloneNode(true));
+      }
+      // Create an item container based on the original parent
+      const container = shallowClone(itemParent);
+      outer.appendChild(container);
+      shell = outer;
+      shellItemContainer = container;
+    };
+
+    // Start with a fresh shell but only append it to page when we add the first item
+    startNewShell(true);
+    let shellAttached = false;
+
+    for (const item of items) {
+      const itemClone = item.cloneNode(true) as HTMLElement;
+
+      // Ensure shell exists
+      if (!shell || !shellItemContainer) {
+        startNewShell(false); // subsequent shells have no header
+        shellAttached = false;
+      }
+
+      shellItemContainer.appendChild(itemClone);
+
+      if (!shellAttached) {
+        // Try attaching shell with its first item; if it overflows, move both to a new page
+        ensureAppendToPage(shell as HTMLElement);
+        shellAttached = true;
+      }
+
+      if (pageOverflows(currentPage)) {
+        // Remove the last item from current shell and move to a new page
+        shellItemContainer.removeChild(itemClone);
+        // If shell has no items, also remove the shell from page to keep header with next
+        if (shellItemContainer.children.length === 0) {
+          currentPage.removeChild(shell as HTMLElement);
+        }
+
+        // Start a new page and new shell (no header after first segment)
+        currentPage = makePage();
+        pagesRoot.appendChild(currentPage);
+
+        startNewShell(false);
+        shellAttached = false;
+        shellItemContainer!.appendChild(itemClone);
+        ensureAppendToPage(shell as HTMLElement);
+        shellAttached = true;
+      }
+      // After placing at least one item, the segment is no longer the first
+      if (isFirstSegment) isFirstSegment = false;
+    }
+  };
+
+  for (const child of children) {
+    const childEl = child as HTMLElement;
+    // If the child contains breakable items, paginate inside it
+    if (childEl.querySelector('[data-page-break="item"]')) {
+      paginateSectionWithItems(childEl);
+      continue;
+    }
+
+    // Otherwise treat as a single block
+    const clone = childEl.cloneNode(true) as HTMLElement;
+    ensureAppendToPage(clone);
   }
 }
 

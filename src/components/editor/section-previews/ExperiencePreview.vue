@@ -9,7 +9,11 @@ const editorStore = useEditorStore();
   <SectionWrapper title="Work History">
     <q-list class="jobList">
       <template v-for="job in editorStore.formData.experience_formset">
-        <div v-if="job.title || job.start_date || job.end_date || job.company || job.description" class="jobWrapper">
+        <div
+          v-if="job.title || job.start_date || job.end_date || job.company || job.description"
+          class="jobWrapper"
+          data-page-break="item"
+        >
           <div class="jobTitleWrapper">
             <p v-if="job.title" class="jobTitle">{{job.title}}</p>
             <p

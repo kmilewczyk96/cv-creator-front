@@ -9,8 +9,10 @@ const props = defineProps({
 
 <template>
   <section>
-    <h3 class="sectionTitle">{{props.title}}</h3>
-    <q-separator style="margin-bottom: 1rem;"/>
+    <div data-page-break="keep-with-next">
+      <h3 class="sectionTitle">{{props.title}}</h3>
+      <q-separator style="margin-bottom: 1rem;"/>
+    </div>
     <slot/>
   </section>
 </template>

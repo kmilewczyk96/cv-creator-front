@@ -1,0 +1,1 @@
+declare type TEditorSection = "personal" | "experience" | "education" | "skills";

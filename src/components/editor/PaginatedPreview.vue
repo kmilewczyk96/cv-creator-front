@@ -176,12 +176,8 @@ watch(() => props.watchKey, paginate);
 
 <style>
 .previewWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
   height: max(30rem, 100vh);
-  overflow: scroll;
+  overflow: auto;
   padding-inline: 0.5rem;
 }
 
@@ -198,7 +194,7 @@ watch(() => props.watchKey, paginate);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20mm; /* gap between rendered pages */
+  gap: 10mm; /* gap between rendered pages */
   width: 100%;
 }
 

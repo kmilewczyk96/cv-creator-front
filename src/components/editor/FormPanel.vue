@@ -12,11 +12,11 @@ const editorStore = useEditorStore();
   <q-card bordered class="formPanel bg-white" flat square>
     <h3 class="text-capitalize q-px-md q-py-lg">{{editorStore.currentSection}}</h3>
     <q-separator/>
-    <PersonalInfoForm v-if="editorStore.currentSection === 'personal'"/>
-    <BaseFormset v-else-if="editorStore.currentSection === 'experience'" v-slot="slotProps" section="experience">
+    <PersonalInfoForm v-show="editorStore.currentSection === 'personal'"/>
+    <BaseFormset v-show="editorStore.currentSection === 'experience'" v-slot="slotProps" section="experience">
       <ExperienceForm :formData="slotProps.formData"/>
     </BaseFormset>
-    <BaseFormset v-else-if="editorStore.currentSection === 'education'" v-slot="slotProps" section="education">
+    <BaseFormset v-show="editorStore.currentSection === 'education'" v-slot="slotProps" section="education">
       <EducationForm :formData="slotProps.formData"/>
     </BaseFormset>
   </q-card>

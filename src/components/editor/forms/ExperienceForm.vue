@@ -12,7 +12,7 @@ const props = defineProps({
 
 <template>
   <q-form class="experienceForm">
-    <q-input v-model="props.formData.title" autofocus class="span2" label="Position" outlined/>
+    <q-input v-model="props.formData.title" class="span2" label="Position" outlined/>
     <q-input v-model="props.formData.company" class="span2" label="Company" outlined/>
     <q-input v-model="props.formData.start_date" label="Start Date" outlined type="date"/>
     <q-input

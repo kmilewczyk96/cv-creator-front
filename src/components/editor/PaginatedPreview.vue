@@ -8,12 +8,28 @@ const props = defineProps<{
 
 const stagingRef = ref<HTMLDivElement | null>(null);
 const pagesRootRef = ref<HTMLDivElement | null>(null);
+const previewWrapperRef = ref<HTMLDivElement | null>(null);
+
+// simple debounce to avoid rebuilding on every keystroke
+let debounceTimer: number | null = null;
+function schedulePaginate(delay = 80) {
+  if (debounceTimer !== null) {
+    clearTimeout(debounceTimer);
+  }
+  debounceTimer = window.setTimeout(() => {
+    paginate();
+  }, delay);
+}
 
 async function paginate() {
   await nextTick();
   const staging = stagingRef.value;
   const pagesRoot = pagesRootRef.value;
   if (!staging || !pagesRoot) return;
+
+  // Preserve current scroll position of the scroll container (wrapper)
+  const wrapper = previewWrapperRef.value;
+  const savedScrollTop = wrapper ? wrapper.scrollTop : 0;
 
   // Clear previous pages
   pagesRoot.innerHTML = '';
@@ -150,15 +166,22 @@ async function paginate() {
     const clone = childEl.cloneNode(true) as HTMLElement;
     ensureAppendToPage(clone);
   }
+
+  // Restore scroll position (clamped to new max height)
+  await nextTick();
+  if (wrapper) {
+    const maxScroll = Math.max(0, wrapper.scrollHeight - wrapper.clientHeight);
+    wrapper.scrollTop = Math.min(savedScrollTop, maxScroll);
+  }
 }
 
 onMounted(paginate);
-watch(() => props.watchKey, paginate);
+watch(() => props.watchKey, () => schedulePaginate(100));
 </script>
 
 <template>
   <!-- Staging area renders live slot content but is kept off-screen. We clone from it into pages. -->
-  <div class="previewWrapper q-py-xl">
+  <div class="previewWrapper q-py-xl" ref="previewWrapperRef">
     <div
       ref="stagingRef"
       class="a4-page staging"

@@ -1,3 +1,4 @@
+import type IEducationForm from "@/interfaces/educationForm.ts";
 import type IExperienceForm from "@/interfaces/experienceForm.ts";
 
 export default interface ICVFormData {
@@ -8,5 +9,6 @@ export default interface ICVFormData {
   location: string
   description: string
 
-  experience_forms: Array<IExperienceForm>
+  experience_formset: Array<IExperienceForm>
+  education_formset: Array<IEducationForm>
 }

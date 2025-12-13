@@ -9,7 +9,7 @@ const editorStore = useEditorStore();
 <template>
   <q-card class="a4-page">
     <PersonalInfoPreview/>
-    <ExperiencePreview v-if="editorStore.formData.experience_forms.length !== 0"/>
+    <ExperiencePreview v-if="editorStore.formData.experience_formset.length !== 0"/>
   </q-card>
 </template>
 

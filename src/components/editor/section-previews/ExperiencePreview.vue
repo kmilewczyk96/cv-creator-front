@@ -8,7 +8,7 @@ const editorStore = useEditorStore();
 <template>
   <SectionWrapper title="Work History">
     <q-list class="jobList">
-      <div v-for="job in editorStore.formData.experience_forms" class="jobWrapper">
+      <div v-for="job in editorStore.formData.experience_formset" class="jobWrapper">
         <div class="jobTitleWrapper">
           <p class="jobTitle">{{job.title}}</p>
           <p class="jobTimeRange">{{job.start_date}} - {{job.is_ongoing ? 'present' : job.end_date}}</p>

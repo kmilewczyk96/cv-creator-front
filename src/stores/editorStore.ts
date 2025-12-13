@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import type IEditorStoreState from "@/interfaces/editorStoreState.ts";
-import type IExperienceForm from "@/interfaces/experienceForm.ts";
 
 
 export const useEditorStore = defineStore('editorStore', {
@@ -14,7 +13,7 @@ export const useEditorStore = defineStore('editorStore', {
       location: "Bytów, PL",
       description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
 
-      experience_forms: [
+      experience_formset: [
         {
           title: "Fullstack Developer",
           company: "Monser Inc.",
@@ -32,19 +31,34 @@ export const useEditorStore = defineStore('editorStore', {
           description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
         }
       ],
+      education_formset: [
+
+      ],
     },
   }),
   actions: {
-    addExperienceForm(newForm: IExperienceForm): void {
-      this.formData.experience_forms.push(newForm);
+    addNewForm(relatedSection: "experience"): void {
+      const formset = this.formData[`${relatedSection}_formset`];
+      switch (relatedSection) {
+        case "experience":
+          formset.push({
+            title: "",
+            company: "",
+            start_date: "",
+            end_date: "",
+            is_ongoing: false,
+            description: "",
+          });
+          break;
+      }
     },
     setCurrentSection(sectionName: TEditorSection): void {
       this.currentSection = sectionName;
     }
   },
   getters: {
-    hasContactData(state) {
+    hasContactData(state): boolean {
       return state.formData.email.length + state.formData.phone.length + state.formData.location.length !== 0;
-    }
+    },
   }
 })

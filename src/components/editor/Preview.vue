@@ -3,32 +3,31 @@ import ExperiencePreview from "@/components/editor/section-previews/ExperiencePr
 import PersonalInfoPreview from "@/components/editor/section-previews/PersonalInfoPreview.vue";
 import {useEditorStore} from "@/stores/editorStore.ts";
 import EducationPreview from "@/components/editor/section-previews/EducationPreview.vue";
+import PaginatedPreview from "@/components/editor/PaginatedPreview.vue";
+import { computed } from 'vue';
 
 const editorStore = useEditorStore();
+// create a lightweight watch key to trigger re-pagination on data changes
+const watchKey = computed(() => JSON.stringify({
+  full_name: editorStore.formData.full_name,
+  position_title: editorStore.formData.position_title,
+  phone: editorStore.formData.phone,
+  email: editorStore.formData.email,
+  location: editorStore.formData.location,
+  description: editorStore.formData.description,
+  exp: editorStore.formData.experience_formset,
+  edu: editorStore.formData.education_formset,
+}));
 </script>
 
 <template>
-  <q-card class="a4-page">
+  <PaginatedPreview :watch-key="watchKey">
     <PersonalInfoPreview/>
     <ExperiencePreview v-if="editorStore.formData.experience_formset.length !== 0"/>
     <EducationPreview v-if="editorStore.formData.education_formset.length !== 0"/>
-  </q-card>
+  </PaginatedPreview>
 </template>
 
 <style scoped>
-.a4-page {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-
-  width: 210mm;
-  height: 297mm;
-  margin: auto;
-  padding: 20mm;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  transform: scale(1.1);
-}
+/* page look is now handled by PaginatedPreview */
 </style>

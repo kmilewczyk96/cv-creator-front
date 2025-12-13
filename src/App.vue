@@ -19,7 +19,6 @@ import EditorToolsPanel from "@/components/editor/EditorToolsPanel.vue";
   display: flex;
   gap: 6.4rem;
   height: 100vh;
-  overflow: hidden; /* prevent page scroll; children manage their own scroll */
   max-width: 180rem;
   margin-inline: auto;
 }

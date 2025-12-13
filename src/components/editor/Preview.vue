@@ -21,13 +21,11 @@ const watchKey = computed(() => JSON.stringify({
 </script>
 
 <template>
-  <div class="q-mt-lg">
   <PaginatedPreview :watch-key="watchKey">
     <PersonalInfoPreview/>
     <ExperiencePreview v-if="editorStore.formData.experience_formset.length !== 0"/>
     <EducationPreview v-if="editorStore.formData.education_formset.length !== 0"/>
   </PaginatedPreview>
-  </div>
 </template>
 
 <style scoped>

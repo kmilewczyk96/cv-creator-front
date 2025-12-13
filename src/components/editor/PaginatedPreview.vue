@@ -56,7 +56,7 @@ watch(() => props.watchKey, paginate);
 
 <template>
   <!-- Staging area renders live slot content but is kept off-screen. We clone from it into pages. -->
-  <div class="previewWrapper">
+  <div class="previewWrapper q-py-xl">
     <div
       ref="stagingRef"
       class="a4-page staging"
@@ -78,6 +78,9 @@ watch(() => props.watchKey, paginate);
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  height: max(30rem, 100vh);
+  overflow: scroll;
+  padding-inline: 0.5rem;
 }
 
 .staging {
@@ -86,6 +89,7 @@ watch(() => props.watchKey, paginate);
   left: 0;
   top: 0;
   z-index: -999;
+  overflow: hidden;
 }
 
 .pagesRoot {
@@ -109,6 +113,7 @@ watch(() => props.watchKey, paginate);
   box-sizing: border-box;
   background-color: #ffffff;
   border: 1px solid #ddd;
+  overflow: hidden;
 }
 
 /* Optional: better print rendering */

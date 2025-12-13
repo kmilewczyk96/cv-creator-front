@@ -41,12 +41,12 @@ const editorStore = useEditorStore();
 }
 
 .previewFullName {
-  font-size: 3.6rem;
+  font-size: 3rem;
   font-weight: 600;
 }
 
 .previewTitle {
-  font-size: 3rem;
+  font-size: 2.4rem;
   font-weight: 400;
   margin-bottom: 1rem;
 }
@@ -60,13 +60,15 @@ const editorStore = useEditorStore();
 .contactInformation {
   align-items: center;
   display: flex;
-  font-size: 1.6rem;
-  font-weight: 200;
+  font-size: 1.2rem;
+  font-weight: 300;
   gap: 0.5rem;
 }
 
 .previewDescription {
   font-size: 1rem;
+  font-weight: 300;
+  margin-bottom: 0;
   text-align: justify;
 }
 </style>

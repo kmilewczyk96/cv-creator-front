@@ -18,8 +18,8 @@ const props = defineProps({
 <style scoped>
 .sectionTitle {
   color: var(--q-primary);
-  font-size: 2rem;
-  font-weight: 600;
+  font-size: 1.6rem;
+  font-weight: 500;
   letter-spacing: 1px;
   text-transform: capitalize;
 }

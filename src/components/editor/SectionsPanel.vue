@@ -11,15 +11,20 @@ const editorStore = useEditorStore();
       <template v-for="section in sections">
         <q-item
           :active="section.name === editorStore.currentSection"
+          activeClass="activeSectionPanel"
           clickable
+          dark
           @click="() => editorStore.setCurrentSection(section.name)"
         >
           <q-item-section avatar>
-            <q-icon :name="section.icon"/>
+            <q-avatar
+              :color="section.name === editorStore.currentSection ? 'secondary' : 'info'"
+              :icon="section.icon"
+              rounded
+              :textColor="section.name === editorStore.currentSection ? 'primary' : 'white'"
+            />
           </q-item-section>
-          <q-item-section>
-            <p class="no-margin text-capitalize">{{section.name}}</p>
-          </q-item-section>
+          <q-item-section class="text-capitalize">{{section.name}}</q-item-section>
         </q-item>
       </template>
     </q-list>
@@ -30,12 +35,22 @@ const editorStore = useEditorStore();
 .mainWrapper {
   background: linear-gradient(
     120deg,
-    var(--color-gray-000) 0%,
-    var(--color-gray-100) 25%,
-    var(--color-gray-000) 60%,
-    var(--color-gray-000)
+    var(--color-gray-900) 0%,
+    var(--color-gray-800) 25%,
+    var(--color-gray-900) 60%,
+    var(--color-gray-900)
   );
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
   min-height: 100vh;
-  min-width: 30rem;
+  width: 24rem;
+}
+
+.activeSectionPanel {
+  background: var(--color-blue-900);
+  color: var(--color-blue-000);
+  font-weight: 500;
 }
 </style>

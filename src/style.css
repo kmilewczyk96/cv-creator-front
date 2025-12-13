@@ -36,7 +36,7 @@ svg {
   line-height: 1.5;
   font-weight: 400;
 
-  background-color: var(--color-gray-700);
+  background-color: var(--color-gray-200);
   color: var(--color-gray-900);
   color-scheme: light;
   font-synthesis: none;

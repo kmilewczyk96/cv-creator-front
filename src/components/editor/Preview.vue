@@ -29,5 +29,6 @@ const editorStore = useEditorStore();
   box-sizing: border-box;
   background-color: #ffffff;
   border: 1px solid #ddd;
+  transform: scale(1.1);
 }
 </style>

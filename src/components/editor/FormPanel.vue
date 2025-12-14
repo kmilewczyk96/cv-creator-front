@@ -5,6 +5,7 @@ import BaseFormset from "@/components/editor/forms/BaseFormset.vue";
 import ExperienceForm from "@/components/editor/forms/ExperienceForm.vue";
 import EducationForm from "@/components/editor/forms/EducationForm.vue";
 import FooterForm from "@/components/editor/forms/FooterForm.vue";
+import SkillsForm from "@/components/editor/forms/SkillsForm.vue";
 
 const editorStore = useEditorStore();
 </script>
@@ -22,6 +23,7 @@ const editorStore = useEditorStore();
       <!--@vue-ignore-->
       <EducationForm :formData="slotProps.formData"/>
     </BaseFormset>
+    <SkillsForm v-show="editorStore.currentSection === 'skills'"/>
     <FooterForm v-show="editorStore.currentSection === 'footer'"/>
   </q-card>
 </template>

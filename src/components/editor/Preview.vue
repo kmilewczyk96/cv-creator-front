@@ -5,6 +5,7 @@ import {useEditorStore} from "@/stores/editorStore.ts";
 import EducationPreview from "@/components/editor/section-previews/EducationPreview.vue";
 import PaginatedPreview from "@/components/editor/PaginatedPreview.vue";
 import { computed } from 'vue';
+import SkillsPreview from "@/components/editor/section-previews/SkillsPreview.vue";
 
 const editorStore = useEditorStore();
 // create a lightweight watch key to trigger re-pagination on data changes
@@ -17,6 +18,7 @@ const watchKey = computed(() => JSON.stringify({
   description: editorStore.formData.description,
   exp: editorStore.formData.experience_formset,
   edu: editorStore.formData.education_formset,
+  skills: editorStore.formData.skills,
   footer: editorStore.formData.footer,
 }));
 </script>
@@ -26,6 +28,7 @@ const watchKey = computed(() => JSON.stringify({
     <PersonalInfoPreview/>
     <ExperiencePreview v-if="editorStore.formData.experience_formset.length !== 0"/>
     <EducationPreview v-if="editorStore.formData.education_formset.length !== 0"/>
+    <SkillsPreview v-if="editorStore.formData.skills && editorStore.formData.skills !== '<br>'"/>
   </PaginatedPreview>
 </template>
 

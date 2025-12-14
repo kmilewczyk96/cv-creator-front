@@ -10,7 +10,7 @@ const editorStore = useEditorStore();
       <q-icon class="q-mb-sm" color="info" name="warning" size="3.2rem"/>
       <p class="text-center text-info">Please remember the importance of including necessary footer agreements, particularly data processing permissions under RODO (General Data Protection Regulation). Otherwise, your application may not be processed.</p>
     </q-card>
-    <q-input v-model="editorStore.formData.footer" label="Footer" outlined type="textarea"/>
+    <q-input v-model="editorStore.formData.footer" rows="16" label="Footer" outlined type="textarea"/>
   </q-form>
 </template>
 

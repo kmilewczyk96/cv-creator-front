@@ -17,6 +17,7 @@ const watchKey = computed(() => JSON.stringify({
   description: editorStore.formData.description,
   exp: editorStore.formData.experience_formset,
   edu: editorStore.formData.education_formset,
+  footer: editorStore.formData.footer,
 }));
 </script>
 

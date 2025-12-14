@@ -1,1 +1,1 @@
-declare type TEditorSection = "personal" | "experience" | "education" | "skills";
+declare type TEditorSection = "personal" | "experience" | "education" | "skills" | "footer";

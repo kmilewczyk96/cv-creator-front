@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {nextTick, onMounted, ref, watch} from 'vue';
+import FooterPreview from '@/components/editor/section-previews/FooterPreview.vue';
 
 const props = defineProps<{
   // Changing this value triggers re-pagination (because slot content is reactive)
@@ -43,13 +44,25 @@ async function paginate() {
     page.setAttribute('role', 'region');
     page.setAttribute('aria-label', `Page ${pageIndex + 1}`);
     pageIndex++;
+    // Attach footer placeholder immediately so pagination accounts for its height
+    const footerTemplate = (stagingRef.value as HTMLDivElement | null)?.querySelector('#page-footer-template') as HTMLElement | null;
+    if (footerTemplate) {
+      const footerClone = footerTemplate.cloneNode(true) as HTMLElement;
+      // mark and clean id to avoid duplicates
+      footerClone.removeAttribute('id');
+      footerClone.classList.add('page-footer');
+      page.appendChild(footerClone);
+    }
     return page;
   };
 
   let currentPage = makePage();
   pagesRoot.appendChild(currentPage);
 
-  const children = Array.from(staging.children) as HTMLElement[];
+  // Take only real content children, skip the footer template (it will be cloned per page)
+  const children = (Array.from(staging.children) as HTMLElement[]).filter(
+    el => el.id !== 'page-footer-template'
+  );
 
   // Utility: replicate an element shallowly (tag, classes, attributes)
   const shallowClone = (el: HTMLElement): HTMLElement => {
@@ -68,12 +81,23 @@ async function paginate() {
 
   // Append node to page, if overflow then move to a fresh page first
   const ensureAppendToPage = (node: HTMLElement, withNewPageIfNeeded = true) => {
-    currentPage.appendChild(node);
+    // Insert content before footer so footer stays as the last block
+    const footerEl = currentPage.querySelector('.page-footer');
+    if (footerEl) {
+      currentPage.insertBefore(node, footerEl);
+    } else {
+      currentPage.appendChild(node);
+    }
     if (pageOverflows(currentPage) && withNewPageIfNeeded) {
       currentPage.removeChild(node);
       currentPage = makePage();
       pagesRoot.appendChild(currentPage);
-      currentPage.appendChild(node);
+      const newFooterEl = currentPage.querySelector('.page-footer');
+      if (newFooterEl) {
+        currentPage.insertBefore(node, newFooterEl);
+      } else {
+        currentPage.appendChild(node);
+      }
     }
   };
 
@@ -191,6 +215,10 @@ watch(() => props.watchKey, () => schedulePaginate(100));
       tabindex="-1"
     >
       <slot/>
+      <!-- Hidden footer template (cloned into each page). Keep inside staging so it stays reactive to store changes. -->
+      <div id="page-footer-template">
+        <FooterPreview/>
+      </div>
     </div>
     <div ref="pagesRootRef" class="pagesRoot" role="document" aria-label="Preview pages"></div>
   </div>
@@ -229,12 +257,17 @@ watch(() => props.watchKey, () => schedulePaginate(100));
   width: 210mm;
   height: 297mm;
   margin: 0 auto;
-  padding: 20mm;
+  padding: 20mm 20mm 5mm;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   background-color: #ffffff;
   border: 1px solid #ddd;
   overflow: hidden;
+}
+
+.page-footer {
+  margin-top: auto; /* stick footer to the bottom of the page */
+  padding-top: 0.75rem;
 }
 
 /* Optional: better print rendering */

@@ -75,12 +75,7 @@ svg {
 }
 
 .globalTextArea ol,
-.globalTextArea ul,
-.globalTextArea ol *,
-.globalTextArea ul *,
-.globalTextArea ol *::before,
-.globalTextArea ul *::before,
-.globalTextArea ol *::after,
-.globalTextArea ul *::after {
-  padding-inline: revert;
+.globalTextArea ul {
+  margin-block: 0.25rem;
+  padding-left: 4ch;
 }

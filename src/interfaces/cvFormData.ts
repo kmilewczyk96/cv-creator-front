@@ -11,4 +11,6 @@ export default interface ICVFormData {
 
   experience_formset: Array<IExperienceForm>
   education_formset: Array<IEducationForm>
+
+  footer: string
 }

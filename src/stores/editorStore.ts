@@ -361,6 +361,7 @@ export const useEditorStore = defineStore('editorStore', {
           description: "WCAG guidelines, ARIA roles, and inclusive design techniques.",
         }
       ],
+      footer: "",
     },
   }),
   actions: {

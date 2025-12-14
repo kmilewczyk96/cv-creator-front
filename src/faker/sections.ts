@@ -14,6 +14,10 @@ const sections: Array<{name: TEditorSection, icon: string}> = [
   {
     name: "skills",
     icon: "build"
+  },
+  {
+    name: "footer",
+    icon: "approval"
   }
 ];
 

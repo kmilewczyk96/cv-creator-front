@@ -18,6 +18,10 @@ async function handleAddNewForm() {
   scrollToAddButton();
 }
 
+function handleDelete(index: number) {
+  editorStore.formData[`${props.section}_formset`].splice(index, 1);
+}
+
 function scrollToAddButton() {
   const target = addNewFormBtn.value.$el;
   target.scrollIntoView({ block: "start" });
@@ -31,8 +35,11 @@ onMounted(() => {
 <template>
   <div class="globalFormWrapper">
     <q-list v-if="editorStore.formData[`${props.section}_formset`].length !== 0" class="formset">
-      <template v-for="formData in editorStore.formData[`${props.section}_formset`]">
-        <slot :formData="formData"/>
+      <template v-for="(formData, index) in editorStore.formData[`${props.section}_formset`]">
+        <div class="formItemWrapper">
+          <slot :formData="formData"/>
+          <q-btn color="negative" dense unelevated icon="delete" @click="() => handleDelete(index)"/>
+        </div>
       </template>
     </q-list>
     <p v-else class="text-info text-center">Add first item to reveal {{props.section}} section.</p>
@@ -54,5 +61,11 @@ onMounted(() => {
   flex-direction: column;
   gap: 4rem;
   margin-bottom: 2rem;
+}
+
+.formItemWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
 }
 </style>

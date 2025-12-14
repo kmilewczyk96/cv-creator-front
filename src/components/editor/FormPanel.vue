@@ -15,9 +15,11 @@ const editorStore = useEditorStore();
     <q-separator/>
     <PersonalInfoForm v-show="editorStore.currentSection === 'personal'"/>
     <BaseFormset v-show="editorStore.currentSection === 'experience'" v-slot="slotProps" section="experience">
+      <!--@vue-ignore-->
       <ExperienceForm :formData="slotProps.formData"/>
     </BaseFormset>
     <BaseFormset v-show="editorStore.currentSection === 'education'" v-slot="slotProps" section="education">
+      <!--@vue-ignore-->
       <EducationForm :formData="slotProps.formData"/>
     </BaseFormset>
     <FooterForm v-show="editorStore.currentSection === 'footer'"/>

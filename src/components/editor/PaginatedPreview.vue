@@ -114,6 +114,7 @@ async function paginate() {
     // Find header (keep-with-next) if present
     const header = sectionEl.querySelector('[data-page-break="keep-with-next"]') as HTMLElement | null;
     // Find the container that directly holds the items (assume same parent for all items)
+    // @ts-ignore
     const itemParent = items[0].parentElement as HTMLElement;
 
     let isFirstSegment = true;
@@ -147,19 +148,21 @@ async function paginate() {
         shellAttached = false;
       }
 
-      shellItemContainer.appendChild(itemClone);
+      shellItemContainer!.appendChild(itemClone);
 
       if (!shellAttached) {
         // Try attaching shell with its first item; if it overflows, move both to a new page
+        // @ts-ignore
         ensureAppendToPage(shell as HTMLElement);
         shellAttached = true;
       }
 
       if (pageOverflows(currentPage)) {
         // Remove the last item from current shell and move to a new page
-        shellItemContainer.removeChild(itemClone);
+        shellItemContainer!.removeChild(itemClone);
         // If shell has no items, also remove the shell from page to keep header with next
-        if (shellItemContainer.children.length === 0) {
+        if (shellItemContainer!.children.length === 0) {
+          // @ts-ignore
           currentPage.removeChild(shell as HTMLElement);
         }
 
@@ -170,6 +173,7 @@ async function paginate() {
         startNewShell(false);
         shellAttached = false;
         shellItemContainer!.appendChild(itemClone);
+        // @ts-ignore
         ensureAppendToPage(shell as HTMLElement);
         shellAttached = true;
       }

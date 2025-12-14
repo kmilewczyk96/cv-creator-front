@@ -23,7 +23,7 @@ const editorStore = useEditorStore();
             </p>
           </div>
           <p v-if="job.company" class="jobCompany">{{job.company}}</p>
-          <p v-if="job.description" class="jobDescription">{{job.description}}</p>
+          <p v-if="job.description" v-html="job.description" class="jobDescription globalTextArea"/>
         </div>
       </template>
     </q-list>

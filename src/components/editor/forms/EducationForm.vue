@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type {PropType} from "vue";
 import type IEducationForm from "@/interfaces/educationForm.ts";
+import textEditorToolbar from "@/utils/textEditorToolbar.ts";
 
 const props = defineProps({
   formData: {
@@ -11,7 +12,13 @@ const props = defineProps({
 </script>
 
 <template>
-  <q-form class="educationForm">
+  <q-form
+    autocorrect="off"
+    autocapitalize="off"
+    autocomplete="off"
+    class="educationForm"
+    spellcheck="false"
+  >
     <q-input v-model="props.formData.title" class="span2" label="Title" outlined/>
     <q-input v-model="props.formData.school" class="span2" label="School" outlined/>
     <q-input v-model="props.formData.start_date" label="Start Date" outlined type="date"/>
@@ -23,7 +30,13 @@ const props = defineProps({
       type="date"
     />
     <q-toggle v-model="props.formData.is_ongoing" label="Currently enrolling"/>
-    <q-input v-model="props.formData.description" class="span2" label="Description" outlined type="textarea"/>
+    <q-editor
+      v-model="props.formData.description"
+      class="span2 globalTextArea"
+      label="Description"
+      outlined
+      :toolbar="textEditorToolbar"
+    />
   </q-form>
 </template>
 

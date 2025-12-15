@@ -9,9 +9,9 @@ const props = defineProps({
 
 <template>
   <section>
-    <div data-page-break="keep-with-next">
+    <div data-page-break="keep-with-next" style="margin-bottom: 4pt;">
       <h3 class="sectionTitle">{{props.title}}</h3>
-      <q-separator style="margin-bottom: 1rem;"/>
+      <q-separator/>
     </div>
     <slot/>
   </section>
@@ -20,9 +20,8 @@ const props = defineProps({
 <style scoped>
 .sectionTitle {
   color: var(--q-primary);
-  font-size: 1.6rem;
-  font-weight: 500;
-  letter-spacing: 1px;
-  text-transform: capitalize;
+  font-size: 12pt;
+  font-weight: 600;
+  line-height: 1;
 }
 </style>

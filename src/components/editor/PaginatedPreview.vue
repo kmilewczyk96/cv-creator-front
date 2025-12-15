@@ -13,7 +13,7 @@ const previewWrapperRef = ref<HTMLDivElement | null>(null);
 
 // simple debounce to avoid rebuilding on every keystroke
 let debounceTimer: number | null = null;
-function schedulePaginate(delay = 80) {
+function schedulePaginate(delay: number) {
   if (debounceTimer !== null) {
     clearTimeout(debounceTimer);
   }
@@ -38,12 +38,18 @@ async function paginate() {
   // Create first page
   let pageIndex = 0;
   const makePage = () => {
+    // Create visual frame wrapper which holds preview-only effects
+    const frame = document.createElement('div');
+    frame.className = 'q-card q-card--bordered no-border-radius';
+
+    // Create the actual printable page element
     const page = document.createElement('div');
     page.className = 'a4-page';
     // Accessibility: expose each page as a labeled region for screen readers
     page.setAttribute('role', 'region');
     page.setAttribute('aria-label', `Page ${pageIndex + 1}`);
     pageIndex++;
+
     // Attach footer placeholder immediately so pagination accounts for its height
     const footerTemplate = (stagingRef.value as HTMLDivElement | null)?.querySelector('#page-footer-template') as HTMLElement | null;
     if (footerTemplate) {
@@ -53,11 +59,21 @@ async function paginate() {
       footerClone.classList.add('page-footer');
       page.appendChild(footerClone);
     }
-    return page;
+
+    // Compose frame > page, append frame to pagesRoot immediately
+    frame.appendChild(page);
+    return { frame, page } as unknown as HTMLElement; // for compatibility with existing typing
   };
 
-  let currentPage = makePage();
-  pagesRoot.appendChild(currentPage);
+  // Create first page; we keep currentPage pointing to the inner .a4-page
+  const first = makePage() as unknown as any;
+  // first is an object { frame, page }
+  // @ts-ignore
+  const firstFrame = (first.frame) ? first.frame : first;
+  // @ts-ignore
+  const firstPage = (first.page) ? first.page : first;
+  pagesRoot.appendChild(firstFrame as HTMLElement);
+  let currentPage = firstPage as HTMLElement;
 
   // Take only real content children, skip the footer template (it will be cloned per page)
   const children = (Array.from(staging.children) as HTMLElement[]).filter(
@@ -90,8 +106,13 @@ async function paginate() {
     }
     if (pageOverflows(currentPage) && withNewPageIfNeeded) {
       currentPage.removeChild(node);
-      currentPage = makePage();
-      pagesRoot.appendChild(currentPage);
+      const next = makePage() as unknown as any;
+      // @ts-ignore
+      const nextFrame = (next.frame) ? next.frame : next;
+      // @ts-ignore
+      const nextPage = (next.page) ? next.page : next;
+      pagesRoot.appendChild(nextFrame as HTMLElement);
+      currentPage = nextPage as HTMLElement;
       const newFooterEl = currentPage.querySelector('.page-footer');
       if (newFooterEl) {
         currentPage.insertBefore(node, newFooterEl);
@@ -167,8 +188,13 @@ async function paginate() {
         }
 
         // Start a new page and new shell (no header after first segment)
-        currentPage = makePage();
-        pagesRoot.appendChild(currentPage);
+        const next2 = makePage() as unknown as any;
+        // @ts-ignore
+        const next2Frame = (next2.frame) ? next2.frame : next2;
+        // @ts-ignore
+        const next2Page = (next2.page) ? next2.page : next2;
+        pagesRoot.appendChild(next2Frame as HTMLElement);
+        currentPage = next2Page as HTMLElement;
 
         startNewShell(false);
         shellAttached = false;
@@ -204,7 +230,9 @@ async function paginate() {
 }
 
 onMounted(paginate);
-watch(() => props.watchKey, () => schedulePaginate(100));
+watch(
+    () => props.watchKey, () => schedulePaginate(50)
+);
 </script>
 
 <template>
@@ -256,34 +284,18 @@ watch(() => props.watchKey, () => schedulePaginate(100));
 .a4-page {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 16pt;
+  line-height: 1.2;
 
   width: 210mm;
   height: 297mm;
-  margin: 0 auto;
   padding: 20mm 20mm 5mm;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
   background-color: #ffffff;
-  border: 1px solid #ddd;
   overflow: hidden;
 }
 
 .page-footer {
   margin-top: auto; /* stick footer to the bottom of the page */
   padding-top: 0.75rem;
-}
-
-/* Optional: better print rendering */
-@media print {
-  .staging { display: none !important; }
-  .previewWrapper { gap: 0; }
-  .a4-page {
-    box-shadow: none;
-    border: none;
-    margin: 0;
-    page-break-after: always;
-  }
-  .a4-page:last-child { page-break-after: auto; }
 }
 </style>

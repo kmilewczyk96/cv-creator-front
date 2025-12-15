@@ -1,7 +1,7 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+  box-sizing: border-box!important;
 }
 
 * {
@@ -22,11 +22,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-img,
-svg {
-  display: block;
-  max-width: 100%;
-}
+/* CAUSE OF THE FANTASTIC html2canvas BUG THAT I'VE SPENT 3HOURS TO RESOLVE */
+/*img,*/
+/*svg {*/
+/*  display: block;*/
+/*  max-width: 100%;*/
+/*}*/
 
 :root {
   font-family: system-ui, Inter, Helvetica, Arial, sans-serif;
@@ -78,4 +79,47 @@ svg {
 .globalTextArea ul {
   margin-block: 0.25rem;
   padding-left: 4ch;
+}
+
+.globalCVEntryList {
+  display: flex;
+  flex-direction: column;
+  gap: 8pt;
+
+  & * {
+    margin-bottom: 0;
+  }
+}
+
+.globalCVEntryWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.globalCVEntryHeaderWrapper {
+  display: flex;
+  font-size: 12pt;
+  justify-content: space-between;
+  line-height: 1.2;
+  margin-bottom: 0;
+}
+
+.globalCVEntryHeader {
+  font-weight: 600;
+}
+
+.globalCVEntrySubHeader {
+  font-size: 10pt;
+  font-style: italic;
+}
+
+.globalCVEntryDescription {
+  font-size: 8pt;
+  font-weight: 300;
+  margin-top: 2pt;
+}
+
+/* OVERWRITTEN QUASAR CLASSES */
+.q-loading__backdrop {
+  opacity: 0.95!important;
 }

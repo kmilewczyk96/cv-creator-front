@@ -13,6 +13,6 @@ const editorStore = useEditorStore();
 
 <style scoped>
 .skillsPreview {
-  font-size: 1.2rem;
+  font-size: 8pt;
 }
 </style>

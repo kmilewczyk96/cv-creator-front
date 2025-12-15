@@ -1,8 +1,77 @@
 <script setup lang="ts">
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import {useQuasar} from "quasar";
 import sections from "@/faker/sections.ts";
 import {useEditorStore} from "@/stores/editorStore.ts";
 
+
+const $q = useQuasar();
 const editorStore = useEditorStore();
+
+async function handleExport() {
+  // START SPINNER:
+  $q.loading.show({
+    delay: 0,
+    message: "Preparing your PDF",
+  });
+
+  try {
+    const pages = Array.from(document.querySelectorAll('.pagesRoot .a4-page')) as HTMLElement[];
+    if (!pages.length) {
+      console.warn('[Export] No pages found to export.');
+      return;
+    }
+
+    // Wait for fonts (Roboto, Material Icons) to be ready
+    // @ts-ignore
+    if (document.fonts && document.fonts.ready) {
+      await (document as any).fonts.ready;
+    }
+
+    // Ensure all images inside pages are loaded
+    const images = pages.flatMap(p => Array.from(p.querySelectorAll('img')) as HTMLImageElement[]);
+    await Promise.all(images.map(img => new Promise<void>(resolve => {
+      if (img.complete) return resolve();
+      img.addEventListener('load', () => resolve(), { once: true });
+      img.addEventListener('error', () => resolve(), { once: true });
+    })));
+
+    const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+    const pageWidth = 210; // mm
+    const pageHeight = 297; // mm
+
+    // Render each A4 page to canvas with high scale for quality
+    const scale = 5; // quality vs size trade-off
+    for (let i = 0; i < pages.length; i++) {
+      const node = pages[i];
+
+      // @ts-ignore
+      const canvas = await html2canvas(node, {
+        scale,
+        backgroundColor: '#ffffff',
+        useCORS: true,
+        logging: false,
+        // Ensure the size matches the element's CSS size
+        width: node!.offsetWidth,
+        height: node!.offsetHeight,
+        windowWidth: document.documentElement.clientWidth,
+        windowHeight: document.documentElement.clientHeight,
+      });
+
+      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+
+      if (i > 0) pdf.addPage('a4', 'portrait');
+      pdf.addImage(imgData, 'JPEG', 0, 0, pageWidth, pageHeight, undefined, "SLOW");
+    }
+
+    pdf.save('cv.pdf');
+  } catch (e) {
+    console.error('[Export] PDF export failed', e);
+  } finally {
+    $q.loading.hide()
+  }
+}
 </script>
 
 <template>
@@ -30,7 +99,7 @@ const editorStore = useEditorStore();
     </q-list>
     <q-separator dark/>
     <q-list>
-      <q-item clickable dark>
+      <q-item clickable dark @click="handleExport">
         <q-item-section avatar>
           <q-avatar
             color="info"
@@ -39,7 +108,7 @@ const editorStore = useEditorStore();
             textColor="white"
           />
         </q-item-section>
-        <q-item-section class="text-capitalize">Download</q-item-section>
+        <q-item-section class="text-capitalize">Export</q-item-section>
       </q-item>
     </q-list>
   </q-card>

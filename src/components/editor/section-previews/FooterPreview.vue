@@ -13,8 +13,8 @@ const editorStore = useEditorStore();
 <style scoped>
 .previewFooter {
   color: var(--q-info);
-  font-size: 0.8rem;
-  font-weight: 300;
+  font-size: 6pt;
+  font-weight: 400;
   text-align: center;
 }
 </style>

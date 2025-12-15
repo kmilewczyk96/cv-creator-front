@@ -3,7 +3,7 @@ import './style.css'
 import App from './App.vue'
 
 // Quasar Framework
-import { Quasar } from 'quasar'
+import {Loading, QSpinnerCube, Quasar} from 'quasar'
 // Import icon/font and base styles
 import quasarIconSet from "quasar/icon-set/material-icons"
 import '@quasar/extras/roboto-font-latin-ext/roboto-font-latin-ext.css'
@@ -31,10 +31,17 @@ app.use(Quasar, {
         info: "#868e96",
         warning: "#ffd43b",
       },
+      loading: {
+        backgroundColor: "dark",
+        boxClass: "globalLoadingBg text-xl",
+        spinner: QSpinnerCube,
+        spinnerColor: "primary",
+        spinnerSize: 128,
+      }
     },
     iconSet: quasarIconSet,
     plugins: {
-      // Add Quasar plugins here when needed, e.g., Dialog, Notify
+      Loading,
     },
   })
 

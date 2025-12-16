@@ -2,6 +2,7 @@
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import {useQuasar} from "quasar";
+import {nextTick} from "vue";
 import sections from "@/faker/sections.ts";
 import {useEditorStore} from "@/stores/editorStore.ts";
 
@@ -15,6 +16,8 @@ async function handleExport() {
     delay: 0,
     message: "Preparing your PDF",
   });
+  await nextTick();
+  await new Promise(requestAnimationFrame);
 
   try {
     const pages = Array.from(document.querySelectorAll('.pagesRoot .a4-page')) as HTMLElement[];
@@ -42,8 +45,9 @@ async function handleExport() {
     const pageHeight = 297; // mm
 
     // Render each A4 page to canvas with high scale for quality
-    const scale = 5; // quality vs size trade-off
+    const scale = 4; // quality vs size trade-off
     for (let i = 0; i < pages.length; i++) {
+      await new Promise(requestAnimationFrame);
       const node = pages[i];
 
       // @ts-ignore
@@ -59,7 +63,14 @@ async function handleExport() {
         windowHeight: document.documentElement.clientHeight,
       });
 
-      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+      const blob = await new Promise<Blob>((resolve) => canvas.toBlob(
+          b => resolve(b!), 'image/jpeg', 0.98)
+      );
+      const imgData = await new Promise<string>((resolve) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result as string);
+        fr.readAsDataURL(blob);
+      });
 
       if (i > 0) pdf.addPage('a4', 'portrait');
       pdf.addImage(imgData, 'JPEG', 0, 0, pageWidth, pageHeight, undefined, "SLOW");

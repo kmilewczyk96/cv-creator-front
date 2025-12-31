@@ -259,8 +259,8 @@ watch(
 
 <style>
 .previewWrapper {
-  height: max(30rem, 100vh);
   overflow: auto;
+  height: 100%;
   padding-inline: 0.5rem;
 }
 

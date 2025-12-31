@@ -138,9 +138,8 @@ async function handleExport() {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  min-height: 100vh;
   padding-top: 9.6rem;
-  width: 24rem;
+  width: 30rem;
 }
 
 .activeSectionPanel {

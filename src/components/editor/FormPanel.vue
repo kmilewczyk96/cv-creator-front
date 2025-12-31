@@ -32,8 +32,7 @@ const editorStore = useEditorStore();
 .formPanel {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   min-width: 30rem;
-  width: 60rem;
+  width: 100%;
 }
 </style>

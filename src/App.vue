@@ -1,29 +1,25 @@
 <script setup lang="ts">
-import FormPanel from "@/components/editor/FormPanel.vue";
-import Preview from "@/components/editor/Preview.vue";
-import EditorToolsPanel from "@/components/editor/EditorToolsPanel.vue";
+import MainNavigation from "@/components/navigation/MainNavigation.vue";
 </script>
 
 <template>
-  <div id="mainWrapper">
-    <q-card class="editorLeftPanel">
-      <EditorToolsPanel/>
-      <FormPanel/>
-    </q-card>
-    <Preview/>
+  <div id="mainAppWrapper">
+    <MainNavigation/>
+    <main>
+      <RouterView/>
+    </main>
   </div>
 </template>
 
 <style scoped>
-#mainWrapper {
-  display: flex;
-  gap: 6.4rem;
+#mainAppWrapper {
+  display: grid;
+  grid-template-rows: auto 1fr;
   height: 100vh;
-  max-width: 180rem;
-  margin-inline: auto;
-}
+  overflow: hidden;
 
-.editorLeftPanel {
-  display: flex;
+  & main {
+    overflow: hidden;
+  }
 }
 </style>

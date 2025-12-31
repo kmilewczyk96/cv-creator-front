@@ -144,5 +144,8 @@ export const useEditorStore = defineStore('editorStore', {
     hasContactData(state): boolean {
       return state.formData.email.length + state.formData.phone.length + state.formData.location.length !== 0;
     },
+  },
+  persist: {
+    storage: sessionStorage,
   }
 })

@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import CustomRouterLink from "@/components/navigation/CustomRouterLink.vue";
+import {useAuthStore} from "@/stores/authStore.ts";
+
+const authStore = useAuthStore();
 </script>
 
 <template>
@@ -9,11 +12,17 @@ import CustomRouterLink from "@/components/navigation/CustomRouterLink.vue";
 
       </div>
       <nav>
-        <CustomRouterLink to="/" label="My CVs"/>
-        <CustomRouterLink to="/editor" label="Editor"/>
-        <CustomRouterLink to="/profile" label="Profile"/>
-        <q-separator dark vertical/>
-        <q-btn color="accent" label="Log out"/>
+        <template v-if="authStore.isAuthenticated">
+          <CustomRouterLink to="/" label="My CVs"/>
+          <CustomRouterLink to="/profile" label="Profile"/>
+          <q-separator dark vertical/>
+          <q-btn color="accent" label="Log out"/>
+        </template>
+        <template v-else>
+          <CustomRouterLink to="/free-editor" label="Free Editor"/>
+          <q-separator dark vertical/>
+          <q-btn color="accent" label="Log in / Register"/>
+        </template>
       </nav>
     </div>
   </div>

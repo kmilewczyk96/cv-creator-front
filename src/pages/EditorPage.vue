@@ -7,7 +7,7 @@ import Preview from "@/components/editor/Preview.vue";
 
 <template>
 <div id="editorPage">
-  <q-card class="editorLeftPanel">
+  <q-card class="editorLeftPanel" square>
     <EditorToolsPanel/>
     <FormPanel/>
   </q-card>

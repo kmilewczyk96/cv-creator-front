@@ -11,16 +11,18 @@ import '@quasar/extras/material-icons/material-icons.css';
 import 'quasar/src/css/index.sass';
 // Pinia Store
 import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 // Vue Router object:
 import router from "@/router.ts";
 
 
 const app = createApp(App).use(router);
 
-// Install Pinia
-app.use(createPinia());
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
-// Install Quasar
+// Plugins:
+app.use(pinia);
 app.use(Quasar, {
   config: {
     brand: {

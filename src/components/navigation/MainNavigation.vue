@@ -6,23 +6,15 @@ const authStore = useAuthStore();
 </script>
 
 <template>
-  <div id="mainNavigationWrapper">
+  <div v-if="authStore.isAuthenticated" id="mainNavigationWrapper">
     <div id="mainNavigationContentWrapper">
       <div>
 
       </div>
       <nav>
-        <template v-if="authStore.isAuthenticated">
-          <CustomRouterLink to="/" label="My CVs"/>
-          <CustomRouterLink to="/profile" label="Profile"/>
-          <q-separator dark vertical/>
-          <q-btn color="accent" label="Log out"/>
-        </template>
-        <template v-else>
-          <CustomRouterLink to="/free-editor" label="Free Editor"/>
-          <q-separator dark vertical/>
-          <q-btn color="accent" label="Log in / Register"/>
-        </template>
+        <CustomRouterLink to="/" label="My CVs"/>
+        <q-separator dark vertical/>
+        <q-btn color="accent" label="Log out"/>
       </nav>
     </div>
   </div>

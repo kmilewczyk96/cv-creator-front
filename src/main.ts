@@ -26,7 +26,7 @@ app.use(pinia);
 app.use(Quasar, {
   config: {
     brand: {
-      primary: "#228be6",
+      primary: "#1864ab",
       secondary: "#a5d8ff",
       accent: "#e64980",
       dark: "#212529",

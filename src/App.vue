@@ -4,7 +4,9 @@ import MainNavigation from "@/components/navigation/MainNavigation.vue";
 
 <template>
   <div id="mainAppWrapper">
-    <MainNavigation/>
+    <header>
+      <MainNavigation/>
+    </header>
     <main>
       <RouterView/>
     </main>

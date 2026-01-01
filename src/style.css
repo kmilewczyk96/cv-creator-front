@@ -43,7 +43,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --max-content-width: 180rem;
+  --max-content-width: 200rem;
 
   --color-gray-000: #f8f9fa;
   --color-gray-100: #f1f3f5;

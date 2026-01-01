@@ -1,4 +1,4 @@
-import {createMemoryHistory, createRouter} from "vue-router";
+import {createRouter, createWebHistory} from "vue-router";
 
 import AuthPage from "@/pages/AuthPage.vue";
 import EditorPage from "@/pages/EditorPage.vue";
@@ -7,13 +7,13 @@ import {useAuthStore} from "@/stores/authStore.ts";
 
 
 const pages = [
-  {path: "/", component: HomePage},
-  {path: "/auth", component: AuthPage, meta: {guestOnly: true}},
-  {path: "/free-editor", component: EditorPage, meta: {guestOnly: true}},
+  {path: "/", name: "home", component: HomePage, meta: {requiresAuth: true}},
+  {path: "/auth", name: "auth", component: AuthPage, meta: {guestOnly: true}},
+  {path: "/free-editor", name: "free-editor", component: EditorPage, meta: {guestOnly: true}},
 ]
 
 const router = createRouter({
-  history: createMemoryHistory(),
+  history: createWebHistory(),
   routes: pages,
 });
 
